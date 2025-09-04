@@ -4,14 +4,20 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/Index.js",
+    "start": "node src/Index.js"
   },
   "dependencies": {
+    "@clerk/express": "^1.7.28",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
   }
 }
