@@ -15,6 +15,6 @@ router.post("/", createInternship);
 router.get("/:id", getInternshipById);
 router.patch("/:id", updateInternship);
 router.delete("/:id", deleteInternship);
-router.post("/upload", express.text(), uploadInternshipsCSV);
+router.post("/upload", express.text({ type: 'text/csv' }), uploadInternshipsCSV);
 
 export default router;
