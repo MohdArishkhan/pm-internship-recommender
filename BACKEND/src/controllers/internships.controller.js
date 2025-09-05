@@ -45,8 +45,10 @@ export const createInternship = async (req, res) => {
 };
 
 export const getInternshipById = async (req, res) => {
+
 	const id = parseInt(req.params.id);
 	if (!id || isNaN(id)) {
+
 		return res.status(400).json({ error: "Invalid ID" });
 	}
 
@@ -63,8 +65,10 @@ export const getInternshipById = async (req, res) => {
 };
 
 export const updateInternship = async (req, res) => {
+
 	const id = parseInt(req.params.id);
 	if (!id || isNaN(id)) {
+
 		return res.status(400).json({ error: "Invalid ID" });
 	}
 
@@ -89,8 +93,10 @@ export const updateInternship = async (req, res) => {
 };
 
 export const deleteInternship = async (req, res) => {
+
 	const id = parseInt(req.params.id);
 	if (!id || isNaN(id)) {
+    
 		return res.status(400).json({ error: "Invalid ID" });
 	}
 
