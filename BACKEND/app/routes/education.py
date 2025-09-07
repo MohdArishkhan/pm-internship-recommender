@@ -20,7 +20,7 @@ async def get_education(education_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Education not found")
     return education
 
-@router.post("/", response_model=schemas.Education)
-async def create_education(education: schemas.EducationCreate, db: Session = Depends(get_db)):
-    """Create a new education"""
-    return education_crud.create(db, education)
+# @router.post("/", response_model=schemas.Education)
+# async def create_education(education: schemas.EducationCreate, db: Session = Depends(get_db)):
+#     """Create a new education"""
+#     return education_crud.create(db, education)

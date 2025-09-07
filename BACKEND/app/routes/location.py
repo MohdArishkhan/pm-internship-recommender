@@ -20,7 +20,7 @@ async def get_location(location_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Location not found")
     return location
 
-@router.post("/", response_model=schemas.Location)
-async def create_location(location: schemas.LocationCreate, db: Session = Depends(get_db)):
-    """Create a new location"""
-    return location_crud.create(db, location)
+# @router.post("/", response_model=schemas.Location)
+# async def create_location(location: schemas.LocationCreate, db: Session = Depends(get_db)):
+#     """Create a new location"""
+#     return location_crud.create(db, location)

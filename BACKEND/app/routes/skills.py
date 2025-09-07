@@ -38,7 +38,7 @@ async def get_skill(skill_id: int, db: Session = Depends(get_db)):
     return skill
 
 
-@router.post("/", response_model=schemas.Skill)
-async def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
-    """Create a new skill"""
-    return skill_crud.create(db, skill)
+# @router.post("/", response_model=schemas.Skill)
+# async def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
+#     """Create a new skill"""
+#     return skill_crud.create(db, skill)
