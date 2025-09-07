@@ -9,18 +9,20 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Location])
 async def get_all_locations(db: Session = Depends(get_db)):
-    """Get all available locations"""
+    # Get all available locations
     return location_crud.get_all(db)
+
 
 @router.get("/{location_id}", response_model=schemas.Location)
 async def get_location(location_id: int, db: Session = Depends(get_db)):
-    """Get a specific location by ID"""
+    # Get a specific location by ID
     location = location_crud.get_by_id(db, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
     return location
 
+    
 # @router.post("/", response_model=schemas.Location)
 # async def create_location(location: schemas.LocationCreate, db: Session = Depends(get_db)):
-#     """Create a new location"""
+#     # Create a new location
 #     return location_crud.create(db, location)

@@ -9,8 +9,9 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Internship])
 async def get_all_internships(db: Session = Depends(get_db)):
-    """Get all available internships"""
+    # Get all available internships
     return internship_crud.get_all(db)
+
 
 @router.get("/search", response_model=schemas.InternshipRecommendationResponse)
 async def search_internships(
@@ -19,7 +20,7 @@ async def search_internships(
     location_id: Optional[int] = Query(None, description="Filter by location ID"),
     db: Session = Depends(get_db)
 ):
-    """Get internships based on skill, education, and location filters"""
+    # Get internships based on skill, education, and location filters
     internships = internship_crud.get_by_filters(
         db, 
         skill_id=skill_id, 
@@ -32,13 +33,14 @@ async def search_internships(
         total_count=len(internships)
     )
 
+
 # @router.get("/recommend")
 # async def get_internship_recommendations(
 #     education_id: int = Query(..., description="Education ID for recommendations"),
 #     location_id: Optional[int] = Query(None, description="Preferred location ID"),
 #     db: Session = Depends(get_db)
 # ):
-#     """Get internship recommendations based on education and optional location preference"""
+#     # Get internship recommendations based on education and optional location preference
 #     # Get internships that match the education
 #     internships = internship_crud.get_by_filters(
 #         db, 
@@ -57,7 +59,8 @@ async def search_internships(
 #         total_count=len(internships)
 #     )
 
+
 # @router.post("/", response_model=schemas.Internship)
 # async def create_internship(internship: schemas.InternshipCreate, db: Session = Depends(get_db)):
-#     """Create a new internship"""
+#     # Create a new internship
 #     return internship_crud.create(db, internship)

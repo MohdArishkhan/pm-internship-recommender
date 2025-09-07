@@ -10,6 +10,7 @@ skills_education = Table(
     Column('education_id', Integer, ForeignKey('educations.id'))
 )
 
+
 class Education(Base):
     __tablename__ = "educations"
     

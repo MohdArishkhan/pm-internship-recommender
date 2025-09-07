@@ -77,6 +77,7 @@ class InternshipCRUD:
         db.refresh(db_internship)
         return db_internship
 
+
 # Create instances
 education_crud = EducationCRUD()
 location_crud = LocationCRUD()

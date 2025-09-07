@@ -94,7 +94,13 @@ def create_sample_data():
         db.close()
 
 if __name__ == "__main__":
-    # Create tables first
+    # Drop all existing tables
+    models.Base.metadata.drop_all(bind=engine)
+    print("All existing tables dropped!")
+    
+    # Create tables fresh
     models.Base.metadata.create_all(bind=engine)
+    print("Tables created successfully!")
+    
     # Then create sample data
     create_sample_data()

@@ -9,13 +9,13 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Skill])
 async def get_all_skills(db: Session = Depends(get_db)):
-    """Get all available skills"""
+    # Get all available skills
     return skill_crud.get_all(db)
 
 
 @router.get("/by-education/{education_id}", response_model=schemas.SkillsByEducationResponse)
 async def get_skills_by_education(education_id: int, db: Session = Depends(get_db)):
-    """Get skills based on education ID"""
+    # Get skills based on education ID
     education = education_crud.get_by_id(db, education_id)
     if not education:
         raise HTTPException(status_code=404, detail="Education not found")
@@ -31,7 +31,7 @@ async def get_skills_by_education(education_id: int, db: Session = Depends(get_d
 
 @router.get("/{skill_id}", response_model=schemas.Skill)
 async def get_skill(skill_id: int, db: Session = Depends(get_db)):
-    """Get a specific skill by ID"""
+    # Get a specific skill by ID
     skill = skill_crud.get_by_id(db, skill_id)
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
@@ -40,5 +40,5 @@ async def get_skill(skill_id: int, db: Session = Depends(get_db)):
 
 # @router.post("/", response_model=schemas.Skill)
 # async def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
-#     """Create a new skill"""
+#     # Create a new skill
 #     return skill_crud.create(db, skill)
