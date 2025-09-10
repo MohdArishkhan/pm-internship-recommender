@@ -57,6 +57,11 @@ class InternshipCRUD:
     def get_all(self, db: Session) -> List[models.Internship]:
         return db.query(models.Internship).all()
     
+    def get_all_with_relations(self, db: Session) -> List[models.Internship]:
+        return db.query(models.Internship).options(
+            db.query(models.Internship).join(models.Skill).join(models.Education).join(models.Location)
+        ).all()
+    
     def get_by_filters(self, db: Session, skill_id: int = None, 
                       education_id: int = None, location_id: int = None) -> List[models.Internship]:
         query = db.query(models.Internship)
@@ -77,6 +82,60 @@ class InternshipCRUD:
         db.refresh(db_internship)
         return db_internship
 
+
+def get_recommendations(db: Session, student_form: schemas.StudentForm) -> List[dict]:
+    """
+    Get top 5 internship recommendations based on student profile
+    """
+    from .scoring import calculate_total_score
+    
+    # Get all active internships with their relationships
+    internships = db.query(models.Internship).all()
+    
+    # Convert student form to dict for scoring
+    student_data = {
+        "education": student_form.education,
+        "skills": student_form.skills,
+        "sector": student_form.sector,
+        "preferred_location": student_form.preferred_location,
+        "description": student_form.description
+    }
+    
+    # Calculate scores for each internship
+    scored_internships = []
+    for internship in internships:
+        score = calculate_total_score(internship, student_data)
+        
+        # Only include internships with score > 0
+        if score > 0:
+            scored_internships.append({
+                "internship": internship,
+                "score": score
+            })
+    
+    # Sort by score (descending) and get top 30
+    scored_internships.sort(key=lambda x: x["score"], reverse=True)
+    top_internships = scored_internships[:30]  # Get top 30 for further filtering
+    
+    # Get top 5
+    top_5 = top_internships[:5]
+    
+    # Format response
+    recommendations = []
+    for item in top_5:
+        internship = item["internship"]
+        recommendations.append({
+            "id": internship.id,
+            "title": internship.title,
+            "sector": internship.sector or "Not specified",
+            "location": internship.location.description if internship.location else "Not specified",
+            "skills": internship.skill.description if internship.skill else "Not specified",
+            "duration": internship.duration or "Not specified",
+            "description": internship.description,
+            "match_score": round(item["score"], 2)
+        })
+    
+    return recommendations
 
 # Create instances
 education_crud = EducationCRUD()
