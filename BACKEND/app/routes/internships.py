@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
@@ -20,7 +20,8 @@ async def search_internships(
     location_id: Optional[int] = Query(None, description="Filter by location ID"),
     db: Session = Depends(get_db)
 ):
-    # Get internships based on skill, education, and location filters
+
+    # Get internships filtered by skill, education, and location
     internships = internship_crud.get_by_filters(
         db, 
         skill_id=skill_id, 
@@ -34,33 +35,3 @@ async def search_internships(
     )
 
 
-# @router.get("/recommend")
-# async def get_internship_recommendations(
-#     education_id: int = Query(..., description="Education ID for recommendations"),
-#     location_id: Optional[int] = Query(None, description="Preferred location ID"),
-#     db: Session = Depends(get_db)
-# ):
-#     # Get internship recommendations based on education and optional location preference
-#     # Get internships that match the education
-#     internships = internship_crud.get_by_filters(
-#         db, 
-#         education_id=education_id,
-#         location_id=location_id
-#     )
-    
-#     if not internships:
-#         raise HTTPException(
-#             status_code=404, 
-#             detail="No internships found for the given criteria"
-#         )
-    
-#     return schemas.InternshipRecommendationResponse(
-#         internships=internships,
-#         total_count=len(internships)
-#     )
-
-
-# @router.post("/", response_model=schemas.Internship)
-# async def create_internship(internship: schemas.InternshipCreate, db: Session = Depends(get_db)):
-#     # Create a new internship
-#     return internship_crud.create(db, internship)
