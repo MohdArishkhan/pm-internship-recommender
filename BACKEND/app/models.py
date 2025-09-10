@@ -56,6 +56,7 @@ class Internship(Base):
     no_of_post = Column(Integer, default=1)
     details = Column(Text, nullable=True)  # Additional details
     sector = Column(String(100), nullable=True)  # Added sector field
+
     
     # Relationships
     skill = relationship("Skill", back_populates="internships")

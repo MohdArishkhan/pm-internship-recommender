@@ -22,6 +22,7 @@ app.include_router(skills.router, prefix="/api/skills", tags=["skills"])
 app.include_router(internships.router, prefix="/api/internships", tags=["internships"])
 app.include_router(recommendations.router, prefix="/api/recommendations", tags=["recommendations"])
 
+
 @app.get("/")
 async def root():
     return {"message": "Internship Recommender API"}

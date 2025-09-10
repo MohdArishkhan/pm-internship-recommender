@@ -3,6 +3,7 @@ from app.database import SessionLocal, engine
 from app import models
 import random
 
+
 def create_sample_data():
     """Create sample data for testing"""
     db = SessionLocal()
@@ -32,6 +33,7 @@ def create_sample_data():
             db.add(edu)
         db.commit()
         
+        
         # Create comprehensive skills
         skills = [
             models.Skill(description="Python Programming, Django, Flask"),
@@ -59,6 +61,7 @@ def create_sample_data():
         for skill in skills:
             db.add(skill)
         db.commit()
+        
         
         # Create comprehensive locations
         locations = [
@@ -99,6 +102,7 @@ def create_sample_data():
             db.add(loc)
         db.commit()
         
+
         # Define comprehensive internship templates
         internship_templates = [
             {
@@ -268,6 +272,7 @@ def create_sample_data():
             print(f"Inserted remaining {len(internships_to_create)} internships...")
         
         print("5000 internships created successfully!")
+
         
     except Exception as e:
         print(f"Error creating sample data: {e}")

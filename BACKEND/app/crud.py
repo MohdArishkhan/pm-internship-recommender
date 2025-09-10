@@ -137,6 +137,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm) -> List[
     
     return recommendations
 
+
 # Create instances
 education_crud = EducationCRUD()
 location_crud = LocationCRUD()
