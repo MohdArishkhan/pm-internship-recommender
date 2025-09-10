@@ -165,10 +165,12 @@ def calculate_description_similarity_mock(internship_desc: str, student_desc: st
 def calculate_total_score(internship: Internship, student_data: Dict) -> float:
     # Calculate total score combining rule-based (60%) and description similarity (40%)
     rule_score = calculate_rule_based_score(internship, student_data)
+
     ml_score = calculate_description_similarity_mock(
         internship.description, 
         student_data.get('description', '')
     )
     
     total_score = rule_score + ml_score
+
     return min(total_score, 100)

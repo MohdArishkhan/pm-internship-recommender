@@ -65,7 +65,7 @@ A FastAPI-based intelligent backend for an internship recommendation system with
    ```bash
    pip install -r requirements.txt
    ```
-
+   
 4. **Configure environment**:
 
    - Copy `.env.example` to `.env`
@@ -213,3 +213,4 @@ comparison = response.json()
 - **ML Libraries**: scikit-learn, numpy for enhanced scoring
 - **Code Style**: Clean, minimal code with # comments only
 - **Testing**: Comprehensive test suites for ML and scoring components
+

@@ -20,6 +20,7 @@ async def search_internships(
     location_id: Optional[int] = Query(None, description="Filter by location ID"),
     db: Session = Depends(get_db)
 ):
+
     # Get internships filtered by skill, education, and location
     internships = internship_crud.get_by_filters(
         db, 
@@ -32,3 +33,5 @@ async def search_internships(
         internships=internships,
         total_count=len(internships)
     )
+
+

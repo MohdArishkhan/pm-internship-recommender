@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from typing import List
 
+
 class EducationCRUD:
     def get_all(self, db: Session) -> List[models.Education]:
         return db.query(models.Education).all()
@@ -158,7 +159,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
             diverse_recommendations.append(item)
     
     top_5 = diverse_recommendations[:5]
-    
+
     # Format response
     recommendations = []
     for item in top_5:
@@ -193,6 +194,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
         recommendations.append(recommendation)
     
     return recommendations
+
 
 # Create instances
 education_crud = EducationCRUD()

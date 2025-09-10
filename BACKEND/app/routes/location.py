@@ -15,8 +15,11 @@ async def get_all_locations(db: Session = Depends(get_db)):
 
 @router.get("/{location_id}", response_model=schemas.Location)
 async def get_location(location_id: int, db: Session = Depends(get_db)):
+
     # Get specific location by ID
     location = location_crud.get_by_id(db, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
     return location
+
+
