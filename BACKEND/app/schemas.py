@@ -53,6 +53,7 @@ class InternshipBase(BaseModel):
     details: Optional[str] = None
     sector: Optional[str] = None
 
+
 class InternshipCreate(InternshipBase):
     pass
 
@@ -75,6 +76,7 @@ class InternshipRecommendationResponse(BaseModel):
     internships: List[Internship]
     total_count: int
 
+
 # Student form for recommendations
 class StudentForm(BaseModel):
     education: str
@@ -93,3 +95,4 @@ class RecommendationResponse(BaseModel):
     duration: Optional[str]
     description: str
     match_score: float
+

@@ -127,3 +127,4 @@ def get_detailed_score(
             "method": "rule_based_only",
             "ml_available": False
         }
+

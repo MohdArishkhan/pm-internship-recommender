@@ -228,3 +228,4 @@ if __name__ == "__main__":
     else:
         print("❎ Skipped dropping tables. Using existing database.")
         create_sample_data()
+
