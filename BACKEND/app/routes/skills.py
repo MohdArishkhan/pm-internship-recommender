@@ -31,14 +31,8 @@ async def get_skills_by_education(education_id: int, db: Session = Depends(get_d
 
 @router.get("/{skill_id}", response_model=schemas.Skill)
 async def get_skill(skill_id: int, db: Session = Depends(get_db)):
-    # Get a specific skill by ID
+    # Get specific skill by ID
     skill = skill_crud.get_by_id(db, skill_id)
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
     return skill
-
-
-# @router.post("/", response_model=schemas.Skill)
-# async def create_skill(skill: schemas.SkillCreate, db: Session = Depends(get_db)):
-#     # Create a new skill
-#     return skill_crud.create(db, skill)

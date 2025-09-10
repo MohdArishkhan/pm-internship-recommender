@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from app.database import Base
 
-# Association table for skills and education (many-to-many)
+# Many-to-many association table for skills and education
 skills_education = Table(
     'skills_education',
     Base.metadata,
@@ -52,10 +52,10 @@ class Internship(Base):
     skills_id = Column(Integer, ForeignKey('skills.id'))
     edu_id = Column(Integer, ForeignKey('educations.id'))
     location_id = Column(Integer, ForeignKey('locations.id'))
-    duration = Column(String(50), nullable=True)  # e.g., "3 months"
+    duration = Column(String(50), nullable=True)
     no_of_post = Column(Integer, default=1)
-    details = Column(Text, nullable=True)  # Additional details
-    sector = Column(String(100), nullable=True)  # Added sector field
+    details = Column(Text, nullable=True)
+    sector = Column(String(100), nullable=True)
     
     # Relationships
     skill = relationship("Skill", back_populates="internships")
