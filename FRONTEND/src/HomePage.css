@@ -1,22 +1,12 @@
 /* General */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  height: auto;
-  background: linear-gradient(
-      180deg,
-      #1e1b4b 0%,
-      #0f172a 40%,
-      #0a0a0a 100%
-    );
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: #fff;
-}
 
+body {
+	margin: 0;
+	padding: 0;
+	background: radial-gradient(circle at top left, #1e1b4b, transparent 40%),
+		radial-gradient(circle at bottom right, #0f172a, transparent 50%), #0a0a0a;
+	height: 100%;
+}
 
 .homepage {
 	min-height: 100vh;
