@@ -1,6 +1,25 @@
 from sqlalchemy.orm import Session
 from app import models, schemas
 from typing import List
+import hashlib
+import json
+from datetime import datetime, timedelta
+
+# Simple in-memory cache for recommendations
+recommendation_cache = {}
+cache_ttl = 300  # 5 minutes cache
+
+def get_cache_key(student_form: schemas.StudentForm, use_ml: bool) -> str:
+    """Generate cache key from student form data"""
+    form_data = {
+        "education": student_form.education,
+        "skills": sorted(student_form.skills) if student_form.skills else [],
+        "sector": student_form.sector,
+        "preferred_location": student_form.preferred_location,
+        "description": student_form.description,
+        "use_ml": use_ml
+    }
+    return hashlib.md5(json.dumps(form_data, sort_keys=True).encode()).hexdigest()
 
 
 class EducationCRUD:
@@ -116,12 +135,70 @@ class InternshipCRUD:
         return db_internship
 
 
+def extract_multiple_skills(internship, db_session=None):
+    """Extract multiple skills from internship, including both primary skill and additional skills from details"""
+    skills = []
+    
+    # Add primary skill
+    if internship.skill:
+        skills.append(internship.skill.description)
+    
+    # Extract additional skills from details field
+    if internship.details and "Additional_Skills_IDs:" in internship.details:
+        try:
+            additional_part = internship.details.split("Additional_Skills_IDs:")[1].split("This")[0]
+            skill_ids = [int(x.strip()) for x in additional_part.split(",") if x.strip().isdigit()]
+            
+            # Use provided session to avoid creating new connections
+            if db_session and skill_ids:
+                additional_skills = db_session.query(models.Skill).filter(
+                    models.Skill.id.in_(skill_ids)
+                ).all()
+                for skill in additional_skills:
+                    skills.append(skill.description)
+        except:
+            pass  # If parsing fails, just use primary skill
+    
+    return skills
+
 def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: bool = True) -> List[dict]:
+    # Check cache first
+    cache_key = get_cache_key(student_form, use_ml)
+    cached_result = recommendation_cache.get(cache_key)
+    
+    if cached_result:
+        cache_time, cached_recommendations = cached_result
+        if datetime.now() - cache_time < timedelta(seconds=cache_ttl):
+            print("🚀 Returning cached recommendations")
+            return cached_recommendations
+        else:
+            # Remove expired cache entry
+            del recommendation_cache[cache_key]
+    
     # Get top internship recommendations with ML or rule-based scoring
     from .scoring import calculate_total_score
     from .ml_scoring import recommendation_engine, calculate_enhanced_score, ML_AVAILABLE
     
-    internships = db.query(models.Internship).all()
+    # Pre-filter internships based on user preferences for better performance
+    from sqlalchemy.orm import joinedload
+    
+    query = db.query(models.Internship).options(
+        joinedload(models.Internship.sector),
+        joinedload(models.Internship.location),
+        joinedload(models.Internship.skill),
+        joinedload(models.Internship.education)
+    )
+    
+    # Filter by sector if specified
+    if student_form.sector and student_form.sector != "Any":
+        query = query.join(models.Sector).filter(models.Sector.name.ilike(f"%{student_form.sector}%"))
+    
+    # Filter by location if specified
+    if student_form.preferred_location and student_form.preferred_location != "Any":
+        query = query.join(models.Location).filter(models.Location.description.ilike(f"%{student_form.preferred_location}%"))
+    
+    # Limit initial results for performance (we'll score these and pick top 50)
+    internships = query.limit(1000).all()
     
     # Check if ML model is ready
     if use_ml and ML_AVAILABLE and not recommendation_engine.is_ready_for_ml():
@@ -136,9 +213,19 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
         "description": student_form.description
     }
     
-    # Calculate scores for each internship
+    # Calculate scores for each internship (optimized with early filtering)
     scored_internships = []
+    min_score_threshold = 10  # Only consider internships with score > 10
+    
     for idx, internship in enumerate(internships):
+        # Quick pre-filter: check if any user skills match internship skills
+        internship_skills = extract_multiple_skills(internship, db)
+        if student_form.skills:
+            skill_match = any(skill.lower() in ' '.join(internship_skills).lower() 
+                            for skill in student_form.skills)
+            if not skill_match and internship.sector.name.lower() not in student_form.sector.lower():
+                continue  # Skip internships with no skill or sector match
+        
         if use_ml and ML_AVAILABLE:
             score, score_breakdown = calculate_enhanced_score(internship, student_data, idx)
             extra_info = {"ml_enhanced": True, "score_breakdown": score_breakdown}
@@ -146,12 +233,18 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
             score = calculate_total_score(internship, student_data)
             extra_info = {"ml_enhanced": False}
         
-        if score > 0:
+        # Only add internships with meaningful scores
+        if score > min_score_threshold:
             scored_internships.append({
                 "internship": internship,
                 "score": score,
+                "skills": internship_skills,  # Cache extracted skills
                 **extra_info
             })
+            
+        # Early termination: if we have enough high-scoring internships, stop
+        if len(scored_internships) >= 100:
+            break
     
     scored_internships.sort(key=lambda x: x["score"], reverse=True)
     top_internships = scored_internships[:50]
@@ -169,7 +262,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
         title = internship.title
         sector = internship.sector.name if internship.sector else "Other"
         location = internship.location.description if internship.location else "Unknown"
-        skills = internship.skill.description if internship.skill else "Other"
+        skills = ", ".join(item["skills"]) if item.get("skills") else (internship.skill.description if internship.skill else "Other")
         
         if len(diverse_recommendations) < 5:
             is_diverse = (
@@ -199,27 +292,11 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
     for item in top_5:
         internship = item["internship"]
         
-        # Extract multiple skills from details field if available
-        primary_skill = internship.skill.description if internship.skill else "Not specified"
-        all_skills_text = primary_skill
-        
-        # Parse additional skills from details field
-        if internship.details and "Required skills:" in internship.details:
-            try:
-                # Extract the skills section from details
-                skills_start = internship.details.find("Required skills:") + len("Required skills:")
-                skills_end = internship.details.find(".", skills_start)
-                if skills_end == -1:
-                    skills_end = internship.details.find("Additional_Skills_IDs:", skills_start)
-                if skills_end == -1:
-                    skills_end = len(internship.details)
-                
-                skills_section = internship.details[skills_start:skills_end].strip()
-                if skills_section and skills_section != primary_skill:
-                    all_skills_text = skills_section
-            except:
-                # Fallback to primary skill if parsing fails
-                pass
+        # Use cached skills from scoring phase for better performance
+        if item.get("skills"):
+            all_skills_text = ", ".join(item["skills"])
+        else:
+            all_skills_text = internship.skill.description if internship.skill else "Not specified"
         
         recommendation = {
             "id": internship.id,
@@ -250,6 +327,16 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
         
         recommendations.append(recommendation)
     
+    # Cache the results for future requests
+    recommendation_cache[cache_key] = (datetime.now(), recommendations)
+    
+    # Clean up old cache entries (keep only last 100 entries)
+    if len(recommendation_cache) > 100:
+        oldest_key = min(recommendation_cache.keys(), 
+                        key=lambda k: recommendation_cache[k][0])
+        del recommendation_cache[oldest_key]
+    
+    print(f"🎯 Generated {len(recommendations)} recommendations (cached for {cache_ttl}s)")
     return recommendations
 
 

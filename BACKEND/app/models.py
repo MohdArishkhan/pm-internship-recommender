@@ -59,14 +59,14 @@ class Internship(Base):
     __tablename__ = "internships"
     
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False)
+    title = Column(String(200), nullable=False, index=True)
     description = Column(Text, nullable=False)
-    company_name = Column(String(200), nullable=False)
-    skills_id = Column(Integer, ForeignKey('skills.id'))
-    edu_id = Column(Integer, ForeignKey('educations.id'))
-    sector_id = Column(Integer, ForeignKey('sectors.id'))
-    location_id = Column(Integer, ForeignKey('locations.id'))
-    duration = Column(String(50), nullable=True)
+    company_name = Column(String(200), nullable=False, index=True)
+    skills_id = Column(Integer, ForeignKey('skills.id'), index=True)
+    edu_id = Column(Integer, ForeignKey('educations.id'), index=True)
+    sector_id = Column(Integer, ForeignKey('sectors.id'), index=True)
+    location_id = Column(Integer, ForeignKey('locations.id'), index=True)
+    duration = Column(String(50), nullable=True, index=True)
     no_of_post = Column(Integer, default=1)
     details = Column(Text, nullable=True)
     
