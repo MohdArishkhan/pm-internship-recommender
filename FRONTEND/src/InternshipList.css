@@ -1,0 +1,226 @@
+/* Base styles */
+.App {
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  background: linear-gradient(135deg, #f3e8ff, #ede9fe); /* Soft purple background */
+  min-height: 100vh;
+  color: #3b0764;
+}
+
+/* Container */
+.list-container {
+  max-width: 1000px;
+  margin: auto;
+  text-align: center;
+}
+
+.list-container h2 {
+  margin-bottom: 30px;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #6b21a8; /* Deep purple */
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px #9d4edd88;
+}
+
+/* Card list layout */
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* Card */
+.card {
+  position: relative;
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  padding: 0px 10px 10px 10px;
+  border-radius: 24px;
+  width: 260px;
+  color: #ede9fe;
+  box-shadow:
+    0 6px 12px rgba(124, 58, 237, 0.4),
+    inset 0 0 15px rgba(255, 255, 255, 0.15),
+    0 0 12px #a855f7;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+  cursor: pointer;
+}
+
+
+.card:hover {
+  transform: translateY(-7px) scale(1.01);
+  box-shadow:
+    0 6px 14px rgba(124, 58, 237, 0.6),
+    0 0 12px #7c3aed,
+    0 0 30px #a855f7,
+    inset 0 0 20px rgba(255, 255, 255, 0.4);
+  z-index: 10;
+}
+
+/* Card heading */
+.card h3 {
+  color: #e7b04a;
+  font-size: 1.5rem;
+  font-weight: 900; /* bolder */
+  margin-bottom: 10px;
+  /* text-shadow: */
+    /* 0 0 12px #c084fc, */
+    /* 0 0 24px #a855f7; */
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.8px;
+}
+
+/* Card paragraph */
+.card p {
+  font-size: 1.05rem;
+  /* line-height: 1.75; */
+  color: #e6d9ff; /* lighter purple-white */
+  /* margin-bottom: 22px; */
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  text-shadow: 0 0 6px #c084fcbb;
+}
+
+/* Card inner decorative bar */
+.card .decorative-bar {
+  height: 4px;
+  width: 60px;
+  background: linear-gradient(90deg, #e0c3fc, #8a2be2);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  align-self: center;
+  box-shadow: 0 0 15px #c084fcaa;
+  position: relative;
+  z-index: 1;
+}
+
+/* Card button (View) */
+.card button {
+  margin-top: auto;
+  padding: 12px 20px;
+  background: #c084fc; /* Soft lilac purple */
+  border-radius: 30px;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid transparent;
+  /* box-shadow: 0 5px 20px rgba(192, 132, 252, 0.7); */
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.card button:hover {
+  background: transparent;
+  border-color: #c084fc;
+  box-shadow:
+    0 0 22px #c084fc,
+    0 0 38px #9333ea;
+  transform: scale(1.08);
+}
+
+/*  Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent; /* fully transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(8px); /* optional blur */
+}
+
+/* Modal */
+.modal {
+  background: #faf5ff;
+  padding: 36px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(124, 58, 237, 0.35);
+  animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 1000;
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  color: #000000; 
+  font-weight: 800;
+  margin-bottom: 18px;
+  text-align: center;
+  letter-spacing: 0.7px;
+  /* text-shadow: 0 0 10px #a78bfacc; */
+}
+
+.modal p {
+  font-size: 1.1rem;
+  /* color: #4c1d95; */
+  line-height: 1.6;
+  text-align: center;
+  font-weight: 500;
+  /* text-shadow: 0 0 4px #b794f4aa; */
+}
+
+/* Modal Buttons container */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  gap: 16px;
+}
+
+/* Modal buttons */
+.modal button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #faf5ff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: background 0.3s ease, transform 0.25s ease;
+  letter-spacing: 0.8px;
+}
+
+/* Cancel button */
+.modal button:first-child {
+  background: #ee5858; /* Pinkish purple */
+  box-shadow: 0 6px 22px #725f67cc;
+}
+
+.modal button:first-child:hover {
+  background: #eb4343;
+  transform: scale(1.01);
+}
+
+/* Apply button */
+.modal .apply-btn {
+  background: #4665f1; /* Deep purple */
+  box-shadow: 0 6px 24px #766fd4;
+  color: #faf5ff;
+}
+
+.modal .apply-btn:hover {
+  background: #6d28d9;
+  box-shadow: 0 6px 28px #a78bfa;
+  transform: scale(1.05);
+}

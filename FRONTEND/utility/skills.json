@@ -1,0 +1,8 @@
+{
+  "Information Technology": ["JavaScript", "React", "Node.js", "Python"],
+  "Healthcare": ["First Aid", "Medical Research", "Pharmacy"],
+  "Education": ["Teaching", "Content Writing", "Curriculum Design"],
+  "Finance": ["Excel", "Accounting", "Financial Analysis"],
+  "Agriculture": ["Soil Testing", "Farming Techniques", "Irrigation"],
+  "Engineering": ["CAD Design", "Matlab", "Circuit Analysis"]
+}

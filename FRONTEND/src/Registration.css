@@ -1,0 +1,209 @@
+.main-box {
+  background: #f9f9f9;
+}
+.form-wrapper {
+  display: flex;
+  flex-direction: column;  /* force vertical stacking */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f9f9f9;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+
+/* Language selector */
+.language-selector {
+  text-align: right;
+  margin-bottom: 16px;
+}
+
+.language-selector select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+.name-field{
+  margin-bottom: 16px;
+}
+.name{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+.name-field input{
+  padding-bottom: 8px;
+  padding-top: 8px;
+  width: 95%;
+  border-radius: 5px;
+  
+}
+/* Card */
+.form-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 24px;
+  width: 70%;
+}
+
+/* Title */
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* Labels */
+.form-label {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-label i {
+  margin-right: 8px;
+  font-size: 20px;
+  color: #007BFF;
+}
+
+/* Input fields */
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-select:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+.selected-skills{
+  padding: 10px 12px;
+}
+/* Checkbox group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.checkbox-group label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+}
+
+.checkbox-group input {
+  margin-right: 8px;
+  transform: scale(1.1);
+}
+
+/* Button */
+.form-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: -17px;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.form-button2 {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+/* Fullscreen loading overlay */
+.loading-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(255, 255, 255, 0.8);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+}
+
+/* Spinner animation */
+.spinner {
+	border: 8px solid #f3f3f3;
+	border-top: 8px solid #3498db;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.loading-text {
+  margin-top: 20px;
+  margin-left: 10px;
+  font-size: 18px;
+  color: #000000;
+  font-weight: 500;
+  text-align: center;
+}
+
+.form-button:hover {
+  background-color: #0056b3;
+}
+.form-textarea {
+  width: 95%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+/* Note */
+.form-note {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 10px;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-card {
+    padding: 16px;
+  }
+}
