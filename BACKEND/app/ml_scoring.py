@@ -42,6 +42,7 @@ class HybridRecommendationEngine:
         self.similarity_cache = {}
         self.cache_hits = 0
         self.cache_misses = 0
+        self.performance_metrics = {}  # Add missing performance_metrics
         
         # Try to load existing model
         if ML_AVAILABLE:
@@ -169,7 +170,7 @@ class HybridRecommendationEngine:
         
         # Sector (high importance - repeat 2x)
         if hasattr(internship, 'sector') and internship.sector:
-            sector_text = self._preprocess_text(internship.sector)
+            sector_text = self._preprocess_text(internship.sector.name)
             text_features.extend([sector_text] * 2)
         
         # Description (medium importance)
@@ -179,7 +180,7 @@ class HybridRecommendationEngine:
         
         # Location (lower importance)
         if hasattr(internship, 'location') and internship.location:
-            location_text = self._preprocess_text(str(internship.location))
+            location_text = self._preprocess_text(internship.location.description)
             text_features.append(location_text)
         
         combined_text = ' '.join(filter(None, text_features))

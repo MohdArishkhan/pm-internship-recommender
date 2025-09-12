@@ -167,7 +167,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
     for item in top_internships:
         internship = item["internship"]
         title = internship.title
-        sector = internship.sector or "Other"
+        sector = internship.sector.name if internship.sector else "Other"
         location = internship.location.description if internship.location else "Unknown"
         skills = internship.skill.description if internship.skill else "Other"
         
@@ -202,7 +202,8 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
         recommendation = {
             "id": internship.id,
             "title": internship.title,
-            "sector": internship.sector or "Not specified",
+            "company_name": internship.company_name,
+            "sector": internship.sector.name if internship.sector else "Not specified",
             "location": internship.location.description if internship.location else "Not specified",
             "skills": internship.skill.description if internship.skill else "Not specified",
             "duration": internship.duration or "Not specified",
