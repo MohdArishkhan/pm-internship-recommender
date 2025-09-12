@@ -297,7 +297,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
             all_skills_text = ", ".join(item["skills"])
         else:
             all_skills_text = internship.skill.description if internship.skill else "Not specified"
-        
+ 
         recommendation = {
             "id": internship.id,
             "title": internship.title,
