@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import translations from "../utility/Languages";
 import Select from "react-select";
 import axios from "axios";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const languageOptions = [
 	{ value: "en", label: "English" },
@@ -324,11 +325,12 @@ const RegistrationForm = () => {
 											<span
 												key={s.id}
 												style={{
-													display: "inline-block",
+													display: "inline-flex",
+													alignItems: "center",
 													padding: "5px 10px",
 													margin: "5px",
-													background: "#f0f0f0",
-													borderRadius: "15px",
+													background: "#9797974d",
+													borderRadius: "10px",
 												}}
 											>
 												{s.description}
@@ -336,11 +338,12 @@ const RegistrationForm = () => {
 													type="button"
 													style={{
 														marginLeft: "5px",
+														marginTop: "4.3px",
 														border: "none",
 														background: "transparent",
 														cursor: "pointer",
-														color: "red",
-														fontWeight: "bold",
+														color: "#e61c2cff", // nice red
+														fontSize: "18px",
 													}}
 													onClick={() =>
 														setFormData((prev) => ({
@@ -351,7 +354,7 @@ const RegistrationForm = () => {
 														}))
 													}
 												>
-													❌
+													<IoCloseCircleOutline />
 												</button>
 											</span>
 										))
