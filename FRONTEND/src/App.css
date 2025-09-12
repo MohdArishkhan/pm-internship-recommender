@@ -1,0 +1,257 @@
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  background-color: #6c8cff;
+  color: white;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: white;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  box-sizing: border-box;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo span {
+  font-size: 24px;
+}
+
+.header-text-small {
+  margin: 0;
+  line-height: 1.2;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.header-text-large {
+  margin: 0;
+  line-height: 1.2;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.header-internship {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.header-icon {
+  font-size: 16px;
+  color: #ff9900;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-registration {
+  background-color: #ff9900;
+  color: white;
+}
+
+.btn-login {
+  background-color: #ff4500;
+  color: white;
+}
+
+.main-content {
+  background-color: #7C99FF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  padding: 0 60px;
+  /* padding-top: 50px; */
+}
+
+.left-panel {
+  max-width: 50%;
+}
+
+.main-title {
+  font-size: 52px;
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+.subtitle {
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+.description {
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 80%;
+  margin-bottom: 30px;
+}
+
+.btn-discover {
+  background-color: white;
+  color: #3366ff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+}
+
+.right-panel {
+  position: relative;
+  width: 50%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brain-circle {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 150px;
+  height: 150px;
+  background-color: #9933cc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.brain-icon {
+  font-size: 60px;
+  color: #ff66b2;
+}
+
+.dashboard-mockup {
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform: rotate(-15deg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  color: #888;
+}
+
+.dashboard-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.stat-box {
+  text-align: center;
+}
+
+.stat-box p {
+  color: #888;
+  font-size: 12px;
+  margin: 0;
+}
+
+.stat-box h3 {
+  font-size: 24px;
+  margin: 5px 0 0;
+  color: #333;
+}
+
+.stat-box:nth-child(1) h3 { color: #33aaff; }
+.stat-box:nth-child(2) h3 { color: #33cc66; }
+.stat-box:nth-child(3) h3 { color: #ff66b2; }
+
+.dashboard-chart {
+  flex-grow: 1;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.chart-line-blue, .chart-line-purple {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(to right, transparent, rgba(102, 153, 255, 0.8), rgba(102, 153, 255, 0.8), rgba(102, 153, 255, 0.8), transparent);
+  top: 55%;
+}
+
+.chart-line-purple {
+  background-image: linear-gradient(to right, transparent, rgba(153, 51, 204, 0.8), rgba(153, 51, 204, 0.8), rgba(153, 51, 204, 0.8), transparent);
+  top: 65%;
+}
+.modi-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  border: 2px solid #ccc;   
+  border-radius: 12px;      
+  padding: 10px;
+  max-width: 320px;         
+  background: #f9f9f9;      
+}
+
+.modi-image {
+  width: 280px;     /* fixed width */
+  height: 450px;    /* fixed height */
+  object-fit: cover; /* image crop/fit balance */
+  border-radius: 8px;
+}
