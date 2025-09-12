@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import education, location, skills, internships, recommendations
+from app.routes import education, location, skills, internships, recommendations, sectors
 
 app = FastAPI(title="Internship Recommender API", version="1.0.0")
 
@@ -18,6 +18,7 @@ app.add_middleware(
 app.include_router(education.router, prefix="/api/education", tags=["education"])
 app.include_router(location.router, prefix="/api/location", tags=["location"])
 app.include_router(skills.router, prefix="/api/skills", tags=["skills"])
+app.include_router(sectors.router, prefix="/api/sectors", tags=["sectors"])
 app.include_router(internships.router, prefix="/api/internships", tags=["internships"])
 app.include_router(recommendations.router, prefix="/api/recommendations", tags=["recommendations"])
 

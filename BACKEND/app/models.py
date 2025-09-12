@@ -2,14 +2,21 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from app.database import Base
 
-# Many-to-many association table for skills and education
-skills_education = Table(
-    'skills_education',
+# Many-to-many association table for education and sectors
+education_sectors = Table(
+    'education_sectors',
     Base.metadata,
-    Column('skill_id', Integer, ForeignKey('skills.id')),
-    Column('education_id', Integer, ForeignKey('educations.id'))
+    Column('education_id', Integer, ForeignKey('educations.id')),
+    Column('sector_id', Integer, ForeignKey('sectors.id'))
 )
 
+# Many-to-many association table for sectors and skills
+sector_skills = Table(
+    'sector_skills',
+    Base.metadata,
+    Column('sector_id', Integer, ForeignKey('sectors.id')),
+    Column('skill_id', Integer, ForeignKey('skills.id'))
+)
 
 class Education(Base):
     __tablename__ = "educations"
@@ -17,9 +24,18 @@ class Education(Base):
     id = Column(Integer, primary_key=True, index=True)
     description = Column(Text, nullable=False)
     
-    # Relationships
-    skills = relationship("Skill", secondary=skills_education, back_populates="educations")
+    sectors = relationship("Sector", secondary=education_sectors, back_populates="educations")
 
+class Sector(Base):
+    __tablename__ = "sectors"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    description = Column(Text, nullable=True)
+    
+    educations = relationship("Education", secondary=education_sectors, back_populates="sectors")
+    skills = relationship("Skill", secondary=sector_skills, back_populates="sectors")
+    internships = relationship("Internship", back_populates="sector")
 
 class Skill(Base):
     __tablename__ = "skills"
@@ -27,10 +43,8 @@ class Skill(Base):
     id = Column(Integer, primary_key=True, index=True)
     description = Column(Text, nullable=False)
     
-    # Relationships
-    educations = relationship("Education", secondary=skills_education, back_populates="skills")
+    sectors = relationship("Sector", secondary=sector_skills, back_populates="skills")
     internships = relationship("Internship", back_populates="skill")
-
 
 class Location(Base):
     __tablename__ = "locations"
@@ -39,9 +53,7 @@ class Location(Base):
     description = Column(Text, nullable=False)
     state = Column(String(100), nullable=True)
     
-    # Relationships
     internships = relationship("Internship", back_populates="location")
-
 
 class Internship(Base):
     __tablename__ = "internships"
@@ -49,15 +61,16 @@ class Internship(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=False)
+    company_name = Column(String(200), nullable=False)
     skills_id = Column(Integer, ForeignKey('skills.id'))
     edu_id = Column(Integer, ForeignKey('educations.id'))
+    sector_id = Column(Integer, ForeignKey('sectors.id'))
     location_id = Column(Integer, ForeignKey('locations.id'))
     duration = Column(String(50), nullable=True)
     no_of_post = Column(Integer, default=1)
     details = Column(Text, nullable=True)
-    sector = Column(String(100), nullable=True)
-
-    # Relationships
+    
     skill = relationship("Skill", back_populates="internships")
     education = relationship("Education")
+    sector = relationship("Sector", back_populates="internships")
     location = relationship("Location", back_populates="internships")

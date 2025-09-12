@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
-from app.crud import skill_crud, education_crud
+from app.crud import skill_crud, education_crud, sector_crud
 from app import schemas
 
 router = APIRouter()
@@ -13,25 +13,65 @@ async def get_all_skills(db: Session = Depends(get_db)):
     return skill_crud.get_all(db)
 
 
-@router.get("/by-education/{education_id}", response_model=schemas.SkillsByEducationResponse)
-async def get_skills_by_education(education_id: int, db: Session = Depends(get_db)):
-    # Get skills based on education ID
-    education = education_crud.get_by_id(db, education_id)
-    if not education:
-        raise HTTPException(status_code=404, detail="Education not found")
+# @router.get("/by-education/{education_id}", response_model=schemas.SkillsByEducationResponse)
+# async def get_skills_by_education(education_id: int, db: Session = Depends(get_db)):
+#     # Get skills based on education ID through sectors
+#     education = education_crud.get_by_id(db, education_id)
+#     if not education:
+#         raise HTTPException(status_code=404, detail="Education not found")
     
-    skills = skill_crud.get_by_education_id(db, education_id)
+#     skills = skill_crud.get_by_education_id(db, education_id)
     
-    return schemas.SkillsByEducationResponse(
-        education_id=education_id,
-        education_description=education.description,
+#     return schemas.SkillsByEducationResponse(
+#         education_id=education_id,
+#         education_description=education.description,
+#         skills=skills
+#     )
+
+@router.get("/by-sector/{sector_id}", response_model=schemas.SkillsBySectorResponse)
+async def get_skills_by_sector(sector_id: int, db: Session = Depends(get_db)):
+    # Get skills based on sector ID
+    sector = sector_crud.get_by_id(db, sector_id)
+    if not sector:
+        raise HTTPException(status_code=404, detail="Sector not found")
+    
+    skills = skill_crud.get_by_sector_id(db, sector_id)
+    
+    return schemas.SkillsBySectorResponse(
+        sector_id=sector_id,
+        sector_name=sector.name,
         skills=skills
     )
 
 
+# @router.get("/by-education-and-sector/{education_id}/{sector_id}", response_model=schemas.SkillsByEducationAndSectorResponse)
+# async def get_skills_by_education_and_sector(
+#     education_id: int, 
+#     sector_id: int, 
+#     db: Session = Depends(get_db)
+# ):
+#     # Get skills filtered by both education and sector
+#     education = education_crud.get_by_id(db, education_id)
+#     if not education:
+#         raise HTTPException(status_code=404, detail="Education not found")
+    
+#     sector = sector_crud.get_by_id(db, sector_id)
+#     if not sector:
+#         raise HTTPException(status_code=404, detail="Sector not found")
+    
+#     skills = skill_crud.get_by_education_and_sector(db, education_id, sector_id)
+    
+#     return schemas.SkillsByEducationAndSectorResponse(
+#         education_id=education_id,
+#         sector_id=sector_id,
+#         education_description=education.description,
+#         sector_name=sector.name,
+#         skills=skills
+#     )
+
+
 @router.get("/{skill_id}", response_model=schemas.Skill)
 async def get_skill(skill_id: int, db: Session = Depends(get_db)):
-
     # Get specific skill by ID
     skill = skill_crud.get_by_id(db, skill_id)
     if not skill:

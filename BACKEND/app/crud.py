@@ -18,6 +18,26 @@ class EducationCRUD:
         return db_education
 
 
+class SectorCRUD:
+    def get_all(self, db: Session) -> List[models.Sector]:
+        return db.query(models.Sector).all()
+    
+    def get_by_id(self, db: Session, sector_id: int) -> models.Sector:
+        return db.query(models.Sector).filter(models.Sector.id == sector_id).first()
+    
+    def get_by_education_id(self, db: Session, education_id: int) -> List[models.Sector]:
+        return db.query(models.Sector).join(models.education_sectors).filter(
+            models.education_sectors.c.education_id == education_id
+        ).all()
+    
+    def create(self, db: Session, sector: schemas.SectorCreate) -> models.Sector:
+        db_sector = models.Sector(**sector.dict())
+        db.add(db_sector)
+        db.commit()
+        db.refresh(db_sector)
+        return db_sector
+
+
 class LocationCRUD:
     def get_all(self, db: Session) -> List[models.Location]:
         return db.query(models.Location).all()
@@ -38,8 +58,22 @@ class SkillCRUD:
         return db.query(models.Skill).all()
     
     def get_by_education_id(self, db: Session, education_id: int) -> List[models.Skill]:
-        return db.query(models.Skill).join(models.skills_education).filter(
-            models.skills_education.c.education_id == education_id
+        # Get skills through education -> sectors -> skills relationship
+        return db.query(models.Skill).join(models.sector_skills).join(models.education_sectors).filter(
+            models.education_sectors.c.education_id == education_id
+        ).distinct().all()
+    
+    def get_by_sector_id(self, db: Session, sector_id: int) -> List[models.Skill]:
+        return db.query(models.Skill).join(models.sector_skills).filter(
+            models.sector_skills.c.sector_id == sector_id
+        ).all()
+    
+    def get_by_education_and_sector(self, db: Session, education_id: int, sector_id: int) -> List[models.Skill]:
+        # Get skills that belong to a specific sector, and that sector is associated with the education
+        return db.query(models.Skill).join(models.sector_skills).join(models.education_sectors).filter(
+            models.sector_skills.c.sector_id == sector_id,
+            models.education_sectors.c.education_id == education_id,
+            models.education_sectors.c.sector_id == sector_id
         ).all()
     
     def get_by_id(self, db: Session, skill_id: int) -> models.Skill:
@@ -198,6 +232,7 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
 
 # Create instances
 education_crud = EducationCRUD()
+sector_crud = SectorCRUD()
 location_crud = LocationCRUD()
 skill_crud = SkillCRUD()
 internship_crud = InternshipCRUD()
