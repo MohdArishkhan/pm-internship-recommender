@@ -43,7 +43,7 @@ const RegistrationForm = () => {
 	});
 
 	const [language, setLanguage] = useState(languageOptions[0]);
-
+	const [message, setMessage] = useState("");
 	const [locationOptions, setLocationOptions] = useState([]);
 	const [educationOptions, setEducationOptions] = useState([]);
 	const [sectorOptions, setSectorOptions] = useState([]);
@@ -111,7 +111,7 @@ const RegistrationForm = () => {
 		const fetchSkills = async () => {
 			try {
 				const selectedSector = sectorOptions.find(
-					(sec) => sec.description === formData.sector,
+					(sec) => sec.name === formData.sector,
 				);
 				if (!selectedSector) return;
 
@@ -123,18 +123,20 @@ const RegistrationForm = () => {
 					? res.data.skills
 					: [];
 
-				// Clean comma separated descriptions
 				const individualSkills = [];
+
 				mergedSkills.forEach((skillObj) => {
-					skillObj.description.split(",").forEach((skill) => {
+					// fallback: name ya description
+					const skillStr = skillObj.name || skillObj.description || "";
+					skillStr.split(",").forEach((skill) => {
 						const trimmedSkill = skill.trim();
 						if (
 							trimmedSkill &&
-							!individualSkills.some((s) => s.description === trimmedSkill)
+							!individualSkills.some((s) => s.name === trimmedSkill)
 						) {
 							individualSkills.push({
 								id: `${skillObj.id}-${trimmedSkill}`,
-								description: trimmedSkill,
+								name: trimmedSkill,
 							});
 						}
 					});
@@ -148,18 +150,19 @@ const RegistrationForm = () => {
 		};
 
 		fetchSkills();
-	}, [formData.sector]);
+	}, [formData.sector, sectorOptions]);
 
 	const t = translations[language?.value] || translations.en;
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
+		setMessage(""); // reset message on new submit
 
 		const payload = {
 			education: formData.education,
 			sector: formData.sector,
-			skills: formData.skills.map((s) => s.description),
+			skills: formData.skills.map((s) => s.name || s.description),
 			preferred_location: formData.location,
 		};
 
@@ -168,9 +171,15 @@ const RegistrationForm = () => {
 				"http://localhost:8000/api/recommendations",
 				payload,
 			);
-			navigate("/internships", { state: { internships: response.data } });
+
+			if (Array.isArray(response.data) && response.data.length > 0) {
+				navigate("/internships", { state: { internships: response.data } });
+			} else {
+				setMessage("No internships found for your selected criteria.");
+			}
 		} catch (err) {
 			console.error("Error fetching recommendations:", err);
+			setMessage("No internships found for your selected criteria.");
 		} finally {
 			setIsLoading(false);
 		}
@@ -237,20 +246,17 @@ const RegistrationForm = () => {
 								<Select
 									options={sectorOptions.map((sec) => ({
 										value: sec.id,
-										label: sec.description,
+										label: sec.name, // <- description se name me change
 									}))}
 									value={
 										sectorOptions
-											.map((sec) => ({
-												value: sec.id,
-												label: sec.description,
-											}))
+											.map((sec) => ({ value: sec.id, label: sec.name }))
 											.find((o) => o.label === formData.sector) || null
 									}
 									onChange={(opt) =>
 										setFormData((prev) => ({
 											...prev,
-											sector: opt?.label || "",
+											sector: opt?.label || "", // store name instead of description
 										}))
 									}
 									placeholder={t.selectSector}
@@ -268,14 +274,14 @@ const RegistrationForm = () => {
 									<Select
 										options={skillsOptions.map((s) => ({
 											value: s.id,
-											label: s.description,
+											label: s.name || s.description, // fallback if name missing
 										}))}
 										value={
 											formData.tempSkillId
 												? skillsOptions
 														.map((s) => ({
 															value: s.id,
-															label: s.description,
+															label: s.name || s.description,
 														}))
 														.find(
 															(s) =>
@@ -333,7 +339,7 @@ const RegistrationForm = () => {
 													borderRadius: "10px",
 												}}
 											>
-												{s.description}
+												{s.name || s.description} {/* fallback */}
 												<button
 													type="button"
 													style={{
@@ -342,7 +348,7 @@ const RegistrationForm = () => {
 														border: "none",
 														background: "transparent",
 														cursor: "pointer",
-														color: "#e61c2cff", // nice red
+														color: "#e61c2cff",
 														fontSize: "18px",
 													}}
 													onClick={() =>
@@ -413,6 +419,17 @@ const RegistrationForm = () => {
 								<button type="submit" className="form-button2">
 									{t.submit}
 								</button>
+								{message && (
+									<p
+										style={{
+											color: "black",
+											marginTop: "10px",
+											fontWeight: "bold",
+										}}
+									>
+										{message}
+									</p>
+								)}
 							</div>
 						</form>
 					</div>
