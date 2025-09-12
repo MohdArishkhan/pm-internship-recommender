@@ -46,7 +46,7 @@ def calculate_rule_based_score(internship: Internship, student_data: Dict) -> fl
     max_possible_score += SKILL_MATCH_WEIGHT
     
     # Sector matching
-    if internship.sector and internship.sector.lower() == student_data['sector'].lower():
+    if internship.sector and internship.sector.name.lower() == student_data['sector'].lower():
         score += SECTOR_MATCH_WEIGHT
     elif internship.sector and student_data['sector']:
         sector_keywords = {
@@ -57,7 +57,7 @@ def calculate_rule_based_score(internship: Internship, student_data: Dict) -> fl
         }
         
         student_sector_lower = student_data['sector'].lower()
-        internship_sector_lower = internship.sector.lower()
+        internship_sector_lower = internship.sector.name.lower()
         
         for sector, keywords in sector_keywords.items():
             if sector in student_sector_lower or sector in internship_sector_lower:
@@ -92,7 +92,7 @@ def calculate_rule_based_score(internship: Internship, student_data: Dict) -> fl
     # Give bonus for good matches
     if skill_match_ratio >= 0.5:
         bonus = 0
-        if internship.sector and internship.sector.lower() == student_data['sector'].lower():
+        if internship.sector and internship.sector.name.lower() == student_data['sector'].lower():
             bonus += PERFECT_MATCH_BONUS * 0.6
         
         if internship.location and internship.location.description.lower() == student_data['preferred_location'].lower():
