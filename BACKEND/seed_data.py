@@ -45,7 +45,7 @@ def create_sample_data():
         db.commit()
         print("✅ Education data created")
 
-        # Skills data - More specific and industry-relevant
+        # Skills data - Individual skills only (no combinations)
         skills_data = [
             "Python Programming", "JavaScript Development", "Java Programming", "C++ Programming",
             "React.js", "Angular", "Vue.js", "Node.js", "Django", "Flask", "FastAPI", "Spring Boot",
@@ -70,7 +70,11 @@ def create_sample_data():
             "Game Development", "Unity", "Unreal Engine", "3D Modeling", "Animation",
             "Blockchain", "Cryptocurrency", "Smart Contracts", "Solidity",
             "Quality Assurance", "Software Testing", "Automation Testing", "Selenium",
-            "Research", "Statistical Analysis", "SPSS", "R Programming", "Data Visualization"
+            "Research", "Statistical Analysis", "SPSS", "R Programming", "Data Visualization",
+            "REST APIs", "GraphQL", "Microservices", "System Design", "Database Design",
+            "Redux", "Express.js", "Material Design", "Bootstrap", "Tailwind CSS",
+            "Computer Vision", "Natural Language Processing", "MLOps", "Cloud Architecture",
+            "Web3", "Smart Contract Development", "DeFi", "NFT Development"
         ]
         
         skill_objects = []
@@ -289,7 +293,7 @@ def create_sample_data():
                     "Learn and implement industry-standard development methodologies."
                 ],
                 "sector_id": 1,  # Technology
-                "skill_ids": [1, 2, 3, 4, 5, 6, 9, 10, 11],  # Python, JS, Java, C++, React, Angular, Django, Flask, FastAPI
+                "skill_ids": [1, 2, 3, 4, 5, 6, 9, 10, 11, 22, 43],  # Python, JS, Java, C++, React, Angular, Django, Flask, FastAPI, SQL, Git
                 "education_ids": [6, 7, 8, 13, 14, 15],
                 "durations": ["3 months", "4 months", "6 months"],
                 "companies": ["TCS", "Infosys", "Microsoft India", "Amazon India", "Google India", "Flipkart", "Paytm"]
@@ -304,7 +308,7 @@ def create_sample_data():
                     "Collaborate with data engineers and product teams on AI initiatives."
                 ],
                 "sector_id": 2,  # Artificial Intelligence
-                "skill_ids": [1, 27, 28, 29, 30, 31, 32, 33, 34, 35],  # Python, ML, Deep Learning, Data Science, AI, TensorFlow, PyTorch, etc.
+                "skill_ids": [1, 27, 28, 29, 30, 31, 32, 33, 34, 35, 89],  # Python, ML, Deep Learning, Data Science, AI, TensorFlow, PyTorch, etc.
                 "education_ids": [6, 7, 8, 9, 13, 14, 15, 16, 20],
                 "durations": ["4 months", "6 months"],
                 "companies": ["Microsoft India", "Google India", "IBM India", "Amazon India", "Flipkart", "Zomato", "BYJU'S"]
@@ -319,7 +323,7 @@ def create_sample_data():
                     "Learn about component architecture and state management."
                 ],
                 "sector_id": 3,  # Web Development
-                "skill_ids": [2, 5, 6, 7, 13, 14, 15],  # JavaScript, React, Angular, Vue, HTML5, CSS3, TypeScript
+                "skill_ids": [2, 5, 6, 7, 13, 14, 15, 47, 86],  # JavaScript, React, Angular, Vue, HTML5, CSS3, TypeScript, UI/UX, Redux
                 "education_ids": [6, 7, 8, 3, 4],
                 "durations": ["3 months", "4 months"],
                 "companies": ["Flipkart", "Zomato", "Swiggy", "Myntra", "Nykaa", "Razorpay", "PhonePe"]
@@ -334,7 +338,7 @@ def create_sample_data():
                     "Collaborate with designers on mobile UI/UX implementation."
                 ],
                 "sector_id": 4,  # Mobile Development
-                "skill_ids": [20, 21],  # Swift, Kotlin (limited to available skills)
+                "skill_ids": [20, 21, 79, 80, 81, 47],  # Swift, Kotlin, Mobile Dev, React Native, Flutter, UI/UX
                 "education_ids": [6, 7, 8, 13, 14],
                 "durations": ["4 months", "6 months"],
                 "companies": ["Ola", "Uber India", "Swiggy", "Zomato", "Paytm", "PhonePe", "CRED"]
@@ -349,7 +353,7 @@ def create_sample_data():
                     "Learn about microservices architecture and distributed systems."
                 ],
                 "sector_id": 7,  # Cloud Computing
-                "skill_ids": [36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47],  # Docker, Kubernetes, AWS, Azure, GCP, DevOps, Git, etc.
+                "skill_ids": [36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 88],  # Docker, Kubernetes, AWS, Azure, GCP, DevOps, Git, etc.
                 "education_ids": [6, 7, 8, 13, 14],
                 "durations": ["4 months", "6 months"],
                 "companies": ["Amazon India", "Microsoft India", "Google India", "IBM India", "TCS", "Infosys"]
@@ -364,7 +368,7 @@ def create_sample_data():
                     "Learn about conversion optimization and customer acquisition."
                 ],
                 "sector_id": 8,  # Digital Marketing
-                "skill_ids": [48, 49, 50, 51, 52, 53, 54, 55, 56],  # Digital Marketing, SEO, SEM, Google Analytics, etc.
+                "skill_ids": [48, 49, 50, 51, 52, 53, 54, 55, 56, 72, 73],  # Digital Marketing, SEO, SEM, Google Analytics, etc.
                 "education_ids": [10, 11, 12, 19, 5],
                 "durations": ["2 months", "3 months", "4 months"],
                 "companies": ["Flipkart", "Amazon India", "Nykaa", "BigBasket", "UrbanClap", "PolicyBazaar"]
@@ -379,7 +383,7 @@ def create_sample_data():
                     "Learn about design thinking and human-centered design principles."
                 ],
                 "sector_id": 10,  # UI/UX Design
-                "skill_ids": [47, 48, 49, 50],  # UI/UX Design, Figma, Adobe XD, Sketch
+                "skill_ids": [47, 48, 49, 50, 51, 13, 14],  # UI/UX Design, Figma, Adobe XD, Sketch, Photoshop, HTML5, CSS3
                 "education_ids": [22, 23, 10, 6, 7],
                 "durations": ["3 months", "4 months"],
                 "companies": ["Flipkart", "Swiggy", "Ola", "BYJU'S", "Razorpay", "Freshworks", "Zoho Corporation"]
@@ -394,7 +398,7 @@ def create_sample_data():
                     "Work with financial modeling and valuation techniques."
                 ],
                 "sector_id": 11,  # Finance
-                "skill_ids": [61, 62, 63, 64, 65],  # Financial Analysis, Accounting, Budgeting, Risk Management, Investment Analysis
+                "skill_ids": [61, 62, 63, 64, 65, 59, 60, 71],  # Financial Analysis, Accounting, Budgeting, Risk Management, Investment Analysis, Excel, Power BI
                 "education_ids": [11, 12, 18, 19, 6],
                 "durations": ["3 months", "6 months"],
                 "companies": ["HDFC Bank", "ICICI Bank", "Axis Bank", "Zerodha", "Groww", "Paytm Money"]
@@ -409,7 +413,7 @@ def create_sample_data():
                     "Collaborate with design and marketing teams on content creation."
                 ],
                 "sector_id": 20,  # Content Creation
-                "skill_ids": [72, 73],  # Content Writing, Copywriting (limited to available skills)
+                "skill_ids": [72, 73, 74, 75, 49, 53, 55],  # Content Writing, Copywriting, Technical Writing, Blog Writing, SEO, Content Marketing, Social Media
                 "education_ids": [10, 11, 16, 17, 1, 2],
                 "durations": ["2 months", "3 months"],
                 "companies": ["Times Internet", "Network18", "Zee Entertainment", "BYJU'S", "Unacademy"]
@@ -424,7 +428,7 @@ def create_sample_data():
                     "Work on HR analytics and employee engagement initiatives."
                 ],
                 "sector_id": 18,  # Human Resources
-                "skill_ids": [66, 67, 68, 69],  # Human Resources, Recruitment, Training, Performance Management
+                "skill_ids": [66, 67, 68, 69, 71, 59, 60],  # Human Resources, Recruitment, Training, Performance Management, Communication, Excel, Power BI
                 "education_ids": [10, 11, 12, 19, 16, 17],
                 "durations": ["3 months", "4 months"],
                 "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Capgemini", "HCL Technologies"]
@@ -439,7 +443,7 @@ def create_sample_data():
                     "Work on customer success initiatives and retention programs."
                 ],
                 "sector_id": 19,  # Sales & Marketing
-                "skill_ids": [66, 67, 70, 71],  # Sales, CRM, Lead Generation, Communication
+                "skill_ids": [66, 67, 70, 71, 58, 59],  # Sales, CRM, Lead Generation, Communication, Market Research, Excel
                 "education_ids": [11, 12, 19, 1, 2, 10],
                 "durations": ["2 months", "3 months", "4 months"],
                 "companies": ["Flipkart", "Amazon India", "Swiggy", "Ola", "PolicyBazaar", "Housing.com"]
@@ -454,19 +458,42 @@ def create_sample_data():
         num_sectors = len(all_sectors)
         num_skills = len(all_skills)
 
-        for i in range(7500):  # Generate 7500 diverse internships
+        # Generate internships with multiple skills stored in details
+        for i in range(5000):  # Generate 2500 internship positions
             template = random.choice(internship_templates)
             
-            # Select random values from template arrays
+            # Select base values from template
             title = random.choice(template["titles"])
             description = random.choice(template["descriptions"])
             company = random.choice(template["companies"])
-            skill_id = random.choice(template["skill_ids"])
             education_id = random.choice(template["education_ids"])
             duration = random.choice(template["durations"])
+            location_id = random.randint(1, num_locations)
+            no_of_posts = random.randint(1, 15)
+            
+            # Select 3-4 skills for this internship
+            skills_for_this_internship = random.sample(template["skill_ids"], 
+                                                     min(len(template["skill_ids"]), 
+                                                         random.randint(3, 4)))  # 3-4 skills per internship
+            
+            # Use the first skill as primary skill_id, store others in details
+            primary_skill_id = skills_for_this_internship[0]
+            additional_skill_ids = skills_for_this_internship[1:]
+            
+            # Get skill names for the details
+            skill_names = []
+            for skill_id in skills_for_this_internship:
+                if skill_id <= num_skills:
+                    skill_names.append(all_skills[skill_id-1].description)
+            
+            # Create details with multiple skills information
+            skills_text = ", ".join(skill_names)
+            additional_skills_json = ",".join(map(str, additional_skill_ids)) if additional_skill_ids else ""
+            
+            details_text = f"Join {company} as a {title} and gain hands-on experience in {all_sectors[template['sector_id']-1].name}. This {duration} internship offers mentorship, real-world projects, and potential for full-time conversion. Required skills: {skills_text}. Additional_Skills_IDs: {additional_skills_json}"
             
             # Ensure IDs are within valid ranges
-            if (skill_id <= num_skills and 
+            if (primary_skill_id <= num_skills and 
                 education_id <= num_educations and 
                 template["sector_id"] <= num_sectors):
                 
@@ -474,21 +501,21 @@ def create_sample_data():
                     title=title,
                     description=description,
                     company_name=company,
-                    skills_id=skill_id,
+                    skills_id=primary_skill_id,
                     edu_id=education_id,
                     sector_id=template["sector_id"],
-                    location_id=random.randint(1, num_locations),
+                    location_id=location_id,
                     duration=duration,
-                    no_of_post=random.randint(1, 15),  # Varying number of positions
-                    details=f"Join {company} as a {title} and gain hands-on experience in {all_sectors[template['sector_id']-1].name}. This {duration} internship offers mentorship, real-world projects, and potential for full-time conversion."
+                    no_of_post=no_of_posts,
+                    details=details_text
                 )
                 internships_to_create.append(internship)
 
             # Batch insert for better performance
-            if len(internships_to_create) >= 250:
+            if len(internships_to_create) >= 500:
                 db.add_all(internships_to_create)
                 db.commit()
-                print(f"✅ Inserted {i+1} internships...")
+                print(f"✅ Inserted {len(internships_to_create)} internships (batch {i//500 + 1})...")
                 internships_to_create = []
 
         # Insert remaining internships

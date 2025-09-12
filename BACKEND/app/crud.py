@@ -199,13 +199,35 @@ def get_recommendations(db: Session, student_form: schemas.StudentForm, use_ml: 
     for item in top_5:
         internship = item["internship"]
         
+        # Extract multiple skills from details field if available
+        primary_skill = internship.skill.description if internship.skill else "Not specified"
+        all_skills_text = primary_skill
+        
+        # Parse additional skills from details field
+        if internship.details and "Required skills:" in internship.details:
+            try:
+                # Extract the skills section from details
+                skills_start = internship.details.find("Required skills:") + len("Required skills:")
+                skills_end = internship.details.find(".", skills_start)
+                if skills_end == -1:
+                    skills_end = internship.details.find("Additional_Skills_IDs:", skills_start)
+                if skills_end == -1:
+                    skills_end = len(internship.details)
+                
+                skills_section = internship.details[skills_start:skills_end].strip()
+                if skills_section and skills_section != primary_skill:
+                    all_skills_text = skills_section
+            except:
+                # Fallback to primary skill if parsing fails
+                pass
+        
         recommendation = {
             "id": internship.id,
             "title": internship.title,
             "company_name": internship.company_name,
             "sector": internship.sector.name if internship.sector else "Not specified",
             "location": internship.location.description if internship.location else "Not specified",
-            "skills": internship.skill.description if internship.skill else "Not specified",
+            "skills": all_skills_text,
             "duration": internship.duration or "Not specified",
             "description": internship.description,
             "match_score": round(item["score"], 2)
