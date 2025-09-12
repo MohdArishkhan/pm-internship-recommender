@@ -24,23 +24,23 @@ def get_recommendations(
     return recommendations
 
 
-@router.post("/compare", response_model=dict)
-def compare_approaches(
-    student_form: schemas.StudentForm,
-    db: Session = Depends(get_db)
-):
-    # Compare ML-enhanced vs rule-based recommendations
-    ml_recommendations = crud.get_recommendations(db, student_form, use_ml=True)
-    rule_recommendations = crud.get_recommendations(db, student_form, use_ml=False)
+# @router.post("/compare", response_model=dict)
+# def compare_approaches(
+#     student_form: schemas.StudentForm,
+#     db: Session = Depends(get_db)
+# ):
+#     # Compare ML-enhanced vs rule-based recommendations
+#     ml_recommendations = crud.get_recommendations(db, student_form, use_ml=True)
+#     rule_recommendations = crud.get_recommendations(db, student_form, use_ml=False)
     
-    return {
-        "ml_enhanced": ml_recommendations[:5],
-        "rule_based": rule_recommendations[:5],
-        "summary": {
-            "ml_avg_score": sum(r["match_score"] for r in ml_recommendations[:5]) / 5 if ml_recommendations else 0,
-            "rule_avg_score": sum(r["match_score"] for r in rule_recommendations[:5]) / 5 if rule_recommendations else 0
-        }
-    }
+#     return {
+#         "ml_enhanced": ml_recommendations[:5],
+#         "rule_based": rule_recommendations[:5],
+#         "summary": {
+#             "ml_avg_score": sum(r["match_score"] for r in ml_recommendations[:5]) / 5 if ml_recommendations else 0,
+#             "rule_avg_score": sum(r["match_score"] for r in rule_recommendations[:5]) / 5 if rule_recommendations else 0
+#         }
+#     }
 
 
 @router.get("/model-status")
@@ -87,44 +87,44 @@ def clear_model_cache():
     return {"message": "Model cache cleared successfully"}
 
 
-@router.get("/detailed-score/{internship_id}")
-def get_detailed_score(
-    internship_id: int,
-    student_form: schemas.StudentForm,
-    db: Session = Depends(get_db)
-):
-    # Get detailed scoring breakdown for specific internship
-    from app.ml_scoring import calculate_enhanced_score, ML_AVAILABLE
-    from app import models
+# @router.get("/detailed-score/{internship_id}")
+# def get_detailed_score(
+#     internship_id: int,
+#     student_form: schemas.StudentForm,
+#     db: Session = Depends(get_db)
+# ):
+#     # Get detailed scoring breakdown for specific internship
+#     from app.ml_scoring import calculate_enhanced_score, ML_AVAILABLE
+#     from app import models
     
-    internship = db.query(models.Internship).filter(models.Internship.id == internship_id).first()
-    if not internship:
-        raise HTTPException(status_code=404, detail="Internship not found")
+#     internship = db.query(models.Internship).filter(models.Internship.id == internship_id).first()
+#     if not internship:
+#         raise HTTPException(status_code=404, detail="Internship not found")
     
-    student_data = {
-        'skills': student_form.skills,
-        'education': student_form.education,
-        'sector': student_form.sector,
-        'location': student_form.location,
-        'description': getattr(student_form, 'description', '')
-    }
+#     student_data = {
+#         'skills': student_form.skills,
+#         'education': student_form.education,
+#         'sector': student_form.sector,
+#         'location': student_form.location,
+#         'description': getattr(student_form, 'description', '')
+#     }
     
-    if ML_AVAILABLE:
-        score, breakdown = calculate_enhanced_score(internship, student_data, 0)
-        return {
-            "internship_id": internship_id,
-            "internship_title": internship.title,
-            "total_score": round(score, 2),
-            "detailed_breakdown": breakdown
-        }
-    else:
-        from app.crud import calculate_total_score
-        score = calculate_total_score(internship, student_data)
-        return {
-            "internship_id": internship_id,
-            "internship_title": internship.title,
-            "total_score": round(score, 2),
-            "method": "rule_based_only",
-            "ml_available": False
-        }
+#     if ML_AVAILABLE:
+#         score, breakdown = calculate_enhanced_score(internship, student_data, 0)
+#         return {
+#             "internship_id": internship_id,
+#             "internship_title": internship.title,
+#             "total_score": round(score, 2),
+#             "detailed_breakdown": breakdown
+#         }
+#     else:
+#         from app.crud import calculate_total_score
+#         score = calculate_total_score(internship, student_data)
+#         return {
+#             "internship_id": internship_id,
+#             "internship_title": internship.title,
+#             "total_score": round(score, 2),
+#             "method": "rule_based_only",
+#             "ml_available": False
+#         }
 
