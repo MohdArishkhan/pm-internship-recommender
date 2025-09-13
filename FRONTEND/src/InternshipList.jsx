@@ -99,72 +99,91 @@
 
 
 
+
 import React, { useState } from "react";
+import { Brain } from "lucide-react";
 import "./InternshipList.css";
 
+
 const InternshipCard = ({ internship, onView }) => (
-  <div className="card">
-    <h3>{internship.title}</h3>
-    <p><strong>Sector:</strong> {internship.sector}</p>
-    <p><strong>Location:</strong> {internship.location}</p>
-    <p><strong>Skills:</strong> {internship.skills}</p>
-    <p><strong>Duration:</strong> {internship.duration}</p>
-    {/* <p><strong>Match Score:</strong> {internship.match_score?.toFixed(2)}%</p> */}
-    <button onClick={() => onView(internship)}>View & Apply</button>
+  <div className="card homepage-card">
+    <h3 className="card-title">{internship.title}</h3>
+    <div className="card-details">
+      <p><strong>Sector:</strong> {internship.sector}</p>
+      <p><strong>Location:</strong> {internship.location}</p>
+      <p><strong>Skills:</strong> {Array.isArray(internship.skills) ? internship.skills.join(", ") : internship.skills}</p>
+      <p><strong>Duration:</strong> {internship.duration}</p>
+    </div>
+    <button className="btn-primary-lg" onClick={() => onView(internship)}>
+      View & Apply
+    </button>
   </div>
 );
 
+
 const InternshipModal = ({ internship, onClose }) => {
   if (!internship) return null;
-
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <h2>{internship.title}</h2>
-        <p><strong>Sector:</strong> {internship.sector}</p>
-        <p><strong>Location:</strong> {internship.location}</p>
-        <p><strong>Skills:</strong> {internship.skills}</p>
-        <p><strong>Duration:</strong> {internship.duration}</p>
-        <p><strong>Description:</strong> {internship.description}</p>
-        {/* <p><strong>Match Score:</strong> {internship.match_score?.toFixed(2)}%</p> */}
-
+    <div className="modal-overlay homepage-modal-overlay">
+      <div className="modal homepage-modal">
+        <h2 className="modal-title">{internship.title}</h2>
+        <div className="modal-details">
+          <p><strong>Sector:</strong> {internship.sector}</p>
+          <p><strong>Location:</strong> {internship.location}</p>
+          <p><strong>Skills:</strong> {Array.isArray(internship.skills) ? internship.skills.join(", ") : internship.skills}</p>
+          <p><strong>Duration:</strong> {internship.duration}</p>
+          <p><strong>Description:</strong> {internship.description}</p>
+        </div>
         <div className="modal-buttons">
-          <button onClick={onClose}>Close</button>
-          <button className="apply-btn">Apply Now</button>
+          <button className="btn-outline-lg" onClick={onClose}>Close</button>
+          <button className="btn-primary-lg apply-btn">Apply Now</button>
         </div>
       </div>
     </div>
   );
 };
 
-const InternshipList = ({ internships = [] }) => {  // default to empty array here
-  const [selectedInternship, setSelectedInternship] = useState(null);
 
+const InternshipList = ({ internships = [] }) => {
+  const [selectedInternship, setSelectedInternship] = useState(null);
   const handleView = (internship) => setSelectedInternship(internship);
   const handleClose = () => setSelectedInternship(null);
-
-  // Defensive fallback: If internships is undefined or not array, set to []
   const safeInternships = Array.isArray(internships) ? internships : [];
 
   return (
-    <div className="list-container">
-      <h2>Recommended Internships</h2>
-
-      {safeInternships.length === 0 ? (
-        <p>No internships found. Try different inputs.</p>
-      ) : (
-        <div className="card-list">
-          {safeInternships.map((internship) => (
-            <InternshipCard
-              key={internship.id}
-              internship={internship}
-              onView={handleView}
-            />
-          ))}
+    <div className="homepage internship-list-bg">
+      {/* Header (copied from HomePage) */}
+      <header className="header">
+        <div className="header-container">
+          <div className="logo-section">
+            <div className="logo-icon">
+              <Brain className="icon" />
+            </div>
+            <div>
+              <h1 className="logo-title">InternAI</h1>
+              <p className="logo-subtitle">Powered by PM Modi Portal</p>
+            </div>
+          </div>
         </div>
-      )}
+      </header>
 
-      <InternshipModal internship={selectedInternship} onClose={handleClose} />
+      <div className="list-container">
+        <h2>Recommended Internships</h2>
+        {safeInternships.length === 0 ? (
+          <p>No internships found. Try different inputs.</p>
+        ) : (
+          <div className="card-list">
+            {safeInternships.map((internship) => (
+              <InternshipCard
+                key={internship.id}
+                internship={internship}
+                onView={handleView}
+              />
+            ))}
+          </div>
+        )}
+        <InternshipModal internship={selectedInternship} onClose={handleClose} />
+      </div>
     </div>
   );
 };
