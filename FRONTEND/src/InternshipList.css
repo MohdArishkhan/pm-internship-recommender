@@ -213,6 +213,18 @@
   padding: 1.5rem;
   gap: 0.5rem;
 }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;  /* vertical center */
+  justify-content: center; /* horizontal center */
+  z-index: 999; /* on top of everything */
+}
 .modal {
   background-color: #1e1b2e;
   color: #fdfdff;
