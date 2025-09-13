@@ -154,6 +154,13 @@ const RegistrationForm = () => {
 
 	const t = translations[language?.value] || translations.en;
 
+	const isFormValid =
+			formData.education &&
+			formData.sector &&
+			formData.skills.length > 0 &&
+			formData.location ||
+			formData.description;
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
@@ -165,7 +172,7 @@ const RegistrationForm = () => {
 			skills: formData.skills.map((s) => s.name || s.description),
 			preferred_location: formData.location,
 		};
-
+		// Check if all required fields are filled
 		try {
 			const response = await axios.post(
 				"http://localhost:8000/api/recommendations",
@@ -416,9 +423,18 @@ const RegistrationForm = () => {
 							</div>
 
 							<div>
-								<button type="submit" className="form-button2">
+								<button
+									type="submit"
+									className="form-button2"
+									disabled={!isFormValid}
+									style={{
+										opacity: isFormValid ? 1 : 0.5,
+										cursor: isFormValid ? "pointer" : "not-allowed",
+									}}
+								>
 									{t.submit}
 								</button>
+
 								{message && (
 									<p
 										style={{
