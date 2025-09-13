@@ -38,8 +38,6 @@
   align-content: space-evenly;            
    justify-content: center;      
    gap: 24px;                  
-  /* max-width: 72rem;             */
-  /* margin: 0 auto; */
 }
 
 .card {
@@ -53,8 +51,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: calc((100% - 48px) / 3);  /* 3 cards per row, accounting for 2 gaps of 24px */
-  max-width: 22rem;                /* Prevent it from being too wide */
+  width: calc((100% - 48px) / 3);  
+  max-width: 22rem;                
   flex-grow: 1;
 
   padding: 1rem;
@@ -221,9 +219,9 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
-  align-items: center;  /* vertical center */
-  justify-content: center; /* horizontal center */
-  z-index: 999; /* on top of everything */
+  align-items: center;  
+  justify-content: center; 
+  z-index: 999; 
 }
 .modal {
   background-color: #1e1b2e;
